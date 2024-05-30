@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- <link rel="stylesheet" href="header.css" /> -->
+    <style>
+      /* body의 마진과 패딩 제거 */
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+      }
+
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        background-color: #d8ebff;
+      }
+
+      .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+      }
+
+      .logo img {
+        height: 35px; /* 로고 이미지 크기 조절 */
+      }
+
+      .page-name {
+        font-weight: bold;
+        order: -1; /* 페이지 이름을 왼쪽으로 이동 */
+      }
+
+      .upload-button a {
+        color: black; /* 로그인 버튼 텍스트 색상 */
+        text-decoration: none; /* 밑줄 제거 */
+        padding: 10px;
+        background-color: #d8ebff; /* 버튼 배경색 */
+        border-radius: 5px; /* 버튼 모서리 둥글게 */
+      }
+
+      .upload-button {
+        border: none;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <div class="header-content">
+        <div class="page-name">Review Analysis Site</div>
+        <div class="logo">
+          <!-- 로고 이미지 추가 -->
+          <img src="./assets/img/로고.png" alt="LOGO" />
+        </div>
+        <!-- 로그인 버튼 클릭 시 login.html로 이동 -->
+        <div class="upload-button">
+          <a href="upload.html">업로드</a>
+        </div>
+      </div>
+    </header>
+  </body>
+</html>

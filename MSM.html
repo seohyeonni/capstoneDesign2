@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      #htmlContent {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100vh;
+      }
+
+      #htmlContent > h1 {
+        display: none;
+      }
+
+      #htmlContent > img {
+        width: 600px;
+        height: 600px;
+      }
+
+      #htmlContent > :nth-child(3) {
+        width: 60px;
+      }
+
+      #htmlContent > :nth-child(5) {
+        width: 60px;
+      }
+
+      #htmlContent > :nth-child(7) {
+        width: 200px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="header"></div>
+    <script>
+      fetch("header.html")
+        .then((response) => response.text())
+        .then((data) => {
+          const headerContainer = document.getElementById("header");
+          headerContainer.innerHTML = data;
+          headerContainer.querySelector(".header").style.backgroundColor =
+            "#d8ebff";
+          const loginButton = headerContainer.querySelector(".upload-button a");
+          if (loginButton) {
+            loginButton.style.backgroundColor = "#d8ebff";
+          }
+        });
+    </script>
+
+    <div id="htmlContent"></div>
+    <script>
+      async function fetchAndDisplayHTML() {
+        try {
+          const response = await fetch(
+            "http://13.125.85.21:8000/data/analysis/msm"
+          );
+          const htmlData = await response.text();
+          console.log(htmlData);
+          // HTML 내용을 가져와서 웹 페이지에 삽입
+          document.getElementById("htmlContent").innerHTML = htmlData;
+        } catch (error) {
+          console.error("Error fetching HTML:", error);
+        }
+      }
+
+      // 페이지 로드 시 HTML 표시 함수 호출
+      window.onload = fetchAndDisplayHTML;
+    </script>
+  </body>
+</html>

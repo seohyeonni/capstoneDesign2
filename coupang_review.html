@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: #f9f1ef;
+      }
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #ffcbe6;
+        color: rgb(51, 46, 46);
+        padding: 10px;
+      }
+      main {
+        max-width: 100%;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .average-container {
+        text-align: left;
+        margin-bottom: 20px;
+        background-color: #ffd2c3;
+        display: inline-block;
+        padding: 10px;
+        border-radius: 5px;
+      }
+      .average {
+        display: flex;
+        align-items: baseline;
+      }
+      .average-text {
+        font-size: 20px;
+        margin-right: 10px;
+        font-weight: bold;
+      }
+      .value {
+        font-size: 25px;
+        font-weight: bold;
+      }
+      .review-boxes {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        grid-gap: 30px;
+        margin-bottom: 20px;
+      }
+      .review-box {
+        background-color: #d0d0d0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 15px;
+        height: 150px;
+        width: 250px;
+        position: relative;
+      }
+      .star-image-container {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 10px;
+      }
+      .star-image {
+        width: 32px;
+        height: 32px;
+      }
+      .star-text {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .star-text div {
+        font-size: 32px;
+        margin-top: 8px;
+        font-weight: bold;
+      }
+      .review {
+        font-size: 15px !important;
+        width: 200px;
+        line-height: normal;
+      }
+      /* .review-type {
+        font-size: 14px;
+        color: #555;
+      } */
+    </style>
+  </head>
+  <body>
+    <div id="header"></div>
+    <script>
+      fetch("header.html")
+        .then((response) => response.text())
+        .then((data) => {
+          const headerContainer = document.getElementById("header");
+          headerContainer.innerHTML = data;
+          headerContainer.querySelector(".header").style.backgroundColor =
+            "#ffd2c3";
+          const loginButton = headerContainer.querySelector(".upload-button a");
+          if (loginButton) {
+            loginButton.style.backgroundColor = "#ffd2c3";
+          }
+        });
+    </script>
+    <main>
+      <div class="average-container">
+        <div class="average">
+          <span class="average-text">Average : </span>
+          <span id="average" class="value"></span>
+        </div>
+      </div>
+      <div class="star-image-container">
+        <div id="star5-box" class="star-text">
+          <img class="star-image" src="./assets/img/star.jpeg" alt="Star" />
+          <div>5</div>
+        </div>
+        <div id="star4-box" class="star-text">
+          <img class="star-image" src="./assets/img/star.jpeg" alt="Star" />
+          <div>4</div>
+        </div>
+        <div id="star3-box" class="star-text">
+          <img class="star-image" src="./assets/img/star.jpeg" alt="Star" />
+          <div>3</div>
+        </div>
+        <div id="star2-box" class="star-text">
+          <img class="star-image" src="./assets/img/star.jpeg" alt="Star" />
+          <div>2</div>
+        </div>
+        <div id="star1-box" class="star-text">
+          <img class="star-image" src="./assets/img/star.jpeg" alt="Star" />
+          <div>1</div>
+        </div>
+      </div>
+      <div class="review-boxes"></div>
+    </main>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        fetch(
+          "https://cors-anywhere.herokuapp.com/http://13.125.85.21:8000/coupang_reviews"
+          // "http://13.125.85.21:8000/coupang_reviews"
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data.coupang_reviews);
+            let sum = 0;
+            for (let i = 0; i < 5; i++) {
+              sum += (i + 1) * data.coupang_reviews[i].reviews.length;
+            }
+            const avg = sum / 3078;
+            const reviewBoxes = document.querySelector(".review-boxes");
+            reviewBoxes.innerHTML = "";
+            const average = document.getElementById("average");
+            average.innerText = avg.toFixed(2);
+
+            const starBoxes = [
+              document.getElementById("star1-box"),
+              document.getElementById("star2-box"),
+              document.getElementById("star3-box"),
+              document.getElementById("star4-box"),
+              document.getElementById("star5-box"),
+            ];
+
+            data.coupang_reviews.forEach((reviewData, index) => {
+              const starBox = starBoxes[index];
+              reviewData.reviews.slice(0, 5).forEach((review) => {
+                const reviewBox = document.createElement("div");
+                reviewBox.classList.add("review-box");
+                if (review.review.length > 30) {
+                  reviewBox.innerHTML = `<div class="review">${review.review.slice(
+                    0,
+                    30
+                  )}...</div>`;
+                } else {
+                  reviewBox.innerHTML = `<div class="review">${review.review}</div>`;
+                }
+
+                starBox.appendChild(reviewBox);
+              });
+            });
+          })
+          .catch((error) => console.error("Error fetching reviews:", error));
+      });
+    </script>
+  </body>
+</html>
